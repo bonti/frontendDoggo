@@ -12,6 +12,32 @@ require('isomorphic-fetch');
  const HTTP_NO_CONTENT=404;
  const HTTP_SERVER_FAILURE = 500;
 
+ 
+ const assessError = (status, response, state) =>{
+  switch(status){
+    case HTTP_NO_CONTENT :  
+    case HTTP_SERVER_FAILURE : 
+    case HTTP_BAD_REQUEST:
+      default: return  {
+        ...state,
+        data: null,
+        error: response ? response.responseStatus
+         : {
+          errorMessage: [{
+            key: "generic.error",
+            message: "We are having some technical difficulties please try again later."
+          }],
+          "httpStatusCode": HTTP_SERVER_FAILURE,
+          "statusDesc": "ServerFailure"
+        },
+        hasError: true,
+
+        isLoading: false
+      }; break;
+  }
+}
+  
+
 const dataFetchReducer = (state, action) => {
   switch (action.type) {
     case "FETCH_INIT":
@@ -23,6 +49,7 @@ const dataFetchReducer = (state, action) => {
         data = action.payload.result.responseData;
         hasResponseData = true;
       }
+
       
       let result =
         action.payload.status === HTTP_STATUS_OK ? {
@@ -34,37 +61,11 @@ const dataFetchReducer = (state, action) => {
           success: true
         }
 
-          : {
-            ...state,
-            data: null,
-            error: action.payload.result.responseStatus ? action.payload.result.responseStatus : {
-              errorMessage: [{
-                key: "generic.error",
-                message: "We are having some technical difficulties please try again later."
-              }],
-              "httpStatusCode": HTTP_SERVER_FAILURE,
-              "statusDesc": "ServerFailure"
-            },
-            hasError: true,
-
-            isLoading: false
-          };
+          :  assessError(action.payload.status, action.payload.result, state);
       return result;
     case "FETCH_FAILURE":
-      return {
-        ...state,
-        data: null,
-        error: action.payload.responseStatus ? action.payload.responseStatus : {
-          errorMessage: [{
-            key: "generic.error",
-            message: "We are having some technical difficulties please try again later."
-          }],
-          "httpStatusCode": HTTP_SERVER_FAILURE,
-          "statusDesc": "ServerFailure"
-        },
-        hasError: true,
-        isLoading: false
-      }
+      return assessError(action.payload.status,action.payload.result)
+      
     default:
       return null;
 

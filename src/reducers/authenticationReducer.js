@@ -7,6 +7,7 @@ export default function authentication(state = initialState.userInfo, action) {
   let newState={}
     switch (action.type) {
       case types.AUTHENTICATE_SUCCESS:
+          
           newState = Object.assign({}, state,{
                                      userInfo:  action.userInfo
                                       }); 

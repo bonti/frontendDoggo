@@ -2,7 +2,7 @@
 import * as React from 'react';
 import { useEffect, useState } from 'react';  
 import { withCookies } from "react-cookie"; 
-import { useIntl } from 'react-intl';  
+ 
 import { Card, Button, Input, Row, Col, Spin, Form } from "antd";
 import useApi from '../../../hooks/useApi'; 
 import * as PortalConstants from "../../../utility/constants";
@@ -12,8 +12,7 @@ import {authenticateAndFetchUserInfo} from '../../../actions/authenticationActio
 import './LoginPage.less';
   
 const LoginPage =(props)=> {
-
-  const intl = useIntl(); 
+ 
   const userInfo = useSelector(state=>state.authentication.userInfo);
    const [hasLoginError, setHasLoginError]  = useState(false);
    const  [authenticateResponse, authenticateRequest] = useApi("login", null,PortalConstants.APIMETHODS.POST);
@@ -35,22 +34,18 @@ const LoginPage =(props)=> {
  
   useEffect(()=>{
     if(userInfo && userInfo!== undefined){
+      if(userInfo.responseStatus!==undefined && userInfo.responseStatus.httpStatusCode!== "200"){
+        setHasLoginError(true);
+      }
+      else{
       showDashBoard(userInfo);
+      }
       setLoading(false);
     } 
 
   }, userInfo);
 
-  // useEffect(() => {
-  //   setLoading(false);
-  //   if(authenticateResponse.data && !authenticateResponse.error && !authenticateResponse.isLoading){
-  //     showDashBoard(authenticateResponse.data[0]); 
-  //   }
-  //   else if(authenticateResponse.error && !authenticateResponse.data && !authenticateResponse.isLoading){
-  //     setHasLoginError(true);
-  //   }
-  // }, [authenticateResponse]);
- 
+   
   const handleSubmit = (values) => {
     let request={};
     request.userName=values.username;
@@ -58,8 +53,7 @@ const LoginPage =(props)=> {
     setHasLoginError(false);
     setLoading(true);
 
-    dispatch(authenticateAndFetchUserInfo(request));
-    //authenticateRequest(request, PortalConstants.APIMETHODS.POST); 
+    dispatch(authenticateAndFetchUserInfo(request)); 
   };
   const onFinishFailed = ({ errorFields }) => {
     form.scrollToField(errorFields[0].name);

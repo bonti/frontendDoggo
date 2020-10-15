@@ -13,7 +13,7 @@ const appReducer = combineReducers({
 const rootReducer = (state, action, root) => {
   if (action.type === types.LOGOUT) {
     let newState = Object.assign({}, initialState, {
-      clientConfig: state.clientConfig
+      
     });
     state = newState;
   }

@@ -100,6 +100,7 @@ const DogDetail = (props) => {
                             <AddEditDog
                                // openAddEditModal={openAddEditModal}
                                 closeModal={onModalClose}
+                                id={props.match.params.id}
                                 mode={PortalConstants.MODAL_MODE_EDIT}
                                 details={petdetailData}
                                  />

@@ -1,24 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, withRouter } from 'react-router-dom';
-import { useSelector } from 'react-redux'
+import {useDispatch, useSelector } from 'react-redux'
 import { withCookies } from 'react-cookie';
 import { HomeOutlined,  CustomerServiceOutlined } from '@ant-design/icons'; 
 
+import * as logoutAction from '../../../actions/logoutAction';
 import { Menu, Dropdown} from 'antd'; 
 import * as PortalConstants from '../../../utility/constants';
 import { CaretDownOutlined } from '@ant-design/icons';
 
 const  CommonMenu =(props) => {  
 
-  let fullName = useSelector(state=>state.authentication.userInfo.name);
-     
+  let userInfo = useSelector(state=>state.authentication.userInfo);
+let fullName = userInfo !== undefined? userInfo.name:"";
+  const [user, setUser] = useState(userInfo);
+  const  dispatch=useDispatch();  
   const  doLogout = () => {
       let cookies = props.cookies; 
       cookies.remove(PortalConstants.AUTH_TOKEN, {
         path: '/'
       });
+      dispatch(logoutAction.logout());
       let loginPath = '/petmanager/login'; 
-      props.history.push(loginPath); 
+      props.history.push(loginPath);
     }
    
  

@@ -1,76 +1,188 @@
 
 import * as React from 'react';
 import { useEffect, useContext, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import { Row, List, Card, Spin, Descriptions, Divider } from 'antd'; 
+ 
+import { Row, Col, Button, Spin, Form, Input, InputNumber, notification } from 'antd'; 
 import { withRouter } from "react-router";  
 import useApi from '../../../hooks/useApi'; 
 import * as PortalConstants from "../../../utility/constants"; 
-import { Link } from 'react-router-dom'
+ 
 
 import ErrorSummary from '../../common/ErrorComponents/ErrorSummary';
 
 //updateStatus
 const AddEditDog = (props) => {
-    // const location = useLocation();
+    
      const [loading, setLoading] = useState(false);
-    // let fetchApiPath= "doggo/";
-    // if(props.match && props.match.params && props.match.params.id){
-    //     fetchApiPath+=props.match.params.id;
-    // }
-    // //thi.props.match.params.userid
-    // const  [petdetailFetchResponse, petdetailFetchRequest] = useApi(fetchApiPath, null,PortalConstants.APIMETHODS.GET);
-    // const [petdetailData , setPetdetailData] =useState(null);
-    // const [showError, setShowError] = useState(false);
-    // useEffect(() => {
-    //     if(petdetailData === null && !loading && !petdetailFetchResponse.isLoading && petdetailFetchResponse.hasError === false){
-    //         setLoading(true);
-    //         petdetailFetchRequest(null,PortalConstants.APIMETHODS.GET,fetchApiPath);
-    //     }
-    // });
+     const [initialValues, setInitialValues] = useState({});
+     let fetchApiPath= "doggos-list/";
+     let postPutApiPath = "doggo/"
+ 
+     const [responseState, postRequest] = useApi(postPutApiPath, null);  
+     const  [petdetailFetchResponse, petdetailFetchRequest] = useApi(fetchApiPath, null,PortalConstants.APIMETHODS.GET);
+     const [petdetailData , setPetdetailData] =useState(props.details);
 
-    // useEffect(() => {
-    //     setLoading(false);
-    //     if(petdetailFetchResponse.data && !petdetailFetchResponse.error && !petdetailFetchResponse.isLoading && !petdetailFetchResponse.hasError){
-    //       setPetdetailData(petdetailFetchResponse.data.details);
-    //     }
-    //     else if(petdetailFetchResponse.error && !petdetailFetchResponse.data && !petdetailFetchResponse.isLoading){
-    //       setShowError(true);
-    //     }
-    //   }, [petdetailFetchResponse]);
+     const [showError, setShowError] = useState(false);
+     
+     const [form] = Form.useForm();
+    useEffect(() => {
+        if(props.mode === PortalConstants.MODAL_MODE_EDIT && props.details === undefined) { 
+            setLoading(true);
+            petdetailFetchRequest(null,PortalConstants.APIMETHODS.GET,fetchApiPath);
+        }
+    },[]);
+
+    useEffect(() => {
+        setLoading(false);
+        if(petdetailFetchResponse.data && !petdetailFetchResponse.error && !petdetailFetchResponse.isLoading && !petdetailFetchResponse.hasError){
+          setPetdetailData(petdetailFetchResponse.data.details);
+          setInitialValues(petdetailFetchResponse.data.details);
+          
+        }
+        else if(petdetailFetchResponse.error && !petdetailFetchResponse.data && !petdetailFetchResponse.isLoading){
+          setShowError(true);
+
+        }
+      }, [petdetailFetchResponse]);
+
+   
       
+    useEffect(() => {
+        if (!responseState.hasError && responseState.success === true) { 
+            notification.success({
+                message: props.mode === PortalConstants.MODAL_MODE_EDIT ? "Edit Dog Details" : "Add New Dog",
+                description: 
+                props.mode === PortalConstants.MODAL_MODE_EDIT ? "Details updated successfully!" : "New dog added successully!",
+                
+              });
+            props.closeModal(true); 
+        } 
+    }, [responseState]);
+
+    const onFinish = values => {
+        let request = {details: values}; 
+
+        if(props.mode=== PortalConstants.MODAL_MODE_ADD){
+            postRequest(request,  PortalConstants.APIMETHODS.POST);
+
+        }
+        else{
+            let newApiPath = postPutApiPath+ props.id;
+            postRequest(request,  PortalConstants.APIMETHODS.PUT, newApiPath); 
+        }
+
+    
+    };
+
+    const onFinishFailed = ({ errorFields }) => {
+        form.scrollToField(errorFields[0].name);
+    };
+ 
 
     return (
         <>
           <Spin spinning={loading}>
 
-              Adding or Editing a dog.
-           
-            {/* {petdetailData && petdetailData!==null && loading === false &&
-            
-                <Card title={petdetailData.name}>
-                    <>
-                    
-                <Descriptions>
-                <Descriptions.Item label="Breed">{petdetailData.breed}</Descriptions.Item> 
-                
-                <Descriptions.Item label="Height">{petdetailData.height}</Descriptions.Item> 
-                
-                <Descriptions.Item label="Weight">{petdetailData.weight}</Descriptions.Item>
-                
-                <Descriptions.Item label="Color">{petdetailData.color}</Descriptions.Item>  
-                <Descriptions.Item label="Age">{petdetailData.age}</Descriptions.Item> 
+          <Form layout="vertical" form={form} initialValues={initialValues}
+                onFinish={onFinish} onFinishFailed={onFinishFailed} >
+                <Row type="flex" gutter={48}>
+                    <Col span={12} >
+                        <Form.Item name="name" label="Name"
+                            rules={[
+                                {
+                                    
+                                    required: true,
+                                    message:  "Name is required."
+                                }
+                            ]}>
+                             <Input type="text" maxLength={250} />
 
-                </Descriptions>
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item name="breed" label="Breed"
+                            rules={[
+                                {
+                                    required: true,
+                                    message: "Breed is required"
+                                }]}>
 
-                 </> 
+                            <Input type="text" maxLength={250} />
+
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row type="flex" gutter={48}>
+                    <Col span={12} >
+                        <Form.Item name="age" label="Age"
+                            rules={[
+                                {
+                                    required: true,
+                                    message:  "Age must be greater than 0 and is required"
+                                }
+                            ]
+                            }>
+                            <InputNumber min={1} max={60} />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item name="color" label="Color"
+                        rules={[
+                                {
+                                    required: true,
+                                    message: "Color is required"
+                                }]}>
+                        <Input type="text" maxLength={250} />
+                        </Form.Item>
+                    </Col>
+                </Row>
+                <Row type="flex" gutter={48}>
+                    <Col span={12} >
+                    <Form.Item name="height" label="Height"
+                        rules={[
+                                {
+                                    required: true,
+                                    message: "Height is required"
+                                }]}>
+                        <Input type="text" maxLength={250} />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                    <Form.Item name="weight" label="Weight"
+                        rules={[
+                                {
+                                    required: true,
+                                    message: "Weight is required"
+                                }]}>
+                        <Input type="text" maxLength={250} />
+                        </Form.Item>
+                    </Col>
+                </Row>
                 
-                </Card> 
-            }
+                {
+                    (responseState.hasError) ?
+                        <ErrorSummary error={responseState.error} />
+                        : null
+                }
+                <Row type="flex" gutter={8} style={{ marginTop: 40 }}>
+                    <Col span={16} />
+                    <Col span={16} />
+                    <Col span={8} align="right">
+                        <div style={{ display: 'inline-block' }}>
+                            <Button
+                                type="secondary"
+                                onClick={() => props.closeModal(false)}>
+                                Cancel
+                            </Button>
 
-            {petdetailFetchResponse.hasError && showError  &&
-             <ErrorSummary error={petdetailFetchResponse.error} />
-            } */}
+                            <Button loading={responseState.isLoading}
+                                type="primary" htmlType="submit">
+                               Save
+                            </Button>
+                        </div>
+                    </Col>
+                </Row>
+            </Form>
          </Spin>
         </>
 
