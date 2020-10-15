@@ -9,7 +9,7 @@ import messages_en from './locales/en/common.json'
  
 import { withCookies } from 'react-cookie';
 import * as PortalConstants from './utility/constants';
-import _ from 'lodash'; 
+ 
 import { LoadingOutlined } from '@ant-design/icons';
 import { Spin } from 'antd';
 

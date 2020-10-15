@@ -42,7 +42,7 @@ const DogDetail = (props) => {
     useEffect(() => {
         if(petdetailData === null && !loading && !petdetailFetchResponse.isLoading && petdetailFetchResponse.hasError === false){
             setLoading(true);
-            petdetailFetchRequest(null,PortalConstants.APIMETHODS.GET,fetchApiPath);
+            petdetailFetchRequest();
         }
     });
 

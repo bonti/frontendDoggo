@@ -14,9 +14,12 @@ import ErrorSummary from '../../common/ErrorComponents/ErrorSummary';
 const AddEditDog = (props) => {
     
      const [loading, setLoading] = useState(false);
-     const [initialValues, setInitialValues] = useState({});
-     let fetchApiPath= "doggos-list/";
+     const [initialValues, setInitialValues] = useState(props.details);
+     let fetchApiPath= "doggo/";
      let postPutApiPath = "doggo/"
+     if(props.id !== undefined || props.id!==null){
+        fetchApiPath+=props.id;
+    }
  
      const [responseState, postRequest] = useApi(postPutApiPath, null);  
      const  [petdetailFetchResponse, petdetailFetchRequest] = useApi(fetchApiPath, null,PortalConstants.APIMETHODS.GET);
@@ -26,18 +29,26 @@ const AddEditDog = (props) => {
      
      const [form] = Form.useForm();
     useEffect(() => {
-        if(props.mode === PortalConstants.MODAL_MODE_EDIT && props.details === undefined) { 
-            setLoading(true);
-            petdetailFetchRequest(null,PortalConstants.APIMETHODS.GET,fetchApiPath);
+        if(props.mode === PortalConstants.MODAL_MODE_EDIT) { 
+            if( props.details === undefined){
+            setLoading(true); 
+            petdetailFetchRequest();
+            }
+            
         }
     },[]);
+
+    useEffect(() => {
+        if(initialValues!== undefined)
+        form.resetFields();
+    },[initialValues]);
 
     useEffect(() => {
         setLoading(false);
         if(petdetailFetchResponse.data && !petdetailFetchResponse.error && !petdetailFetchResponse.isLoading && !petdetailFetchResponse.hasError){
           setPetdetailData(petdetailFetchResponse.data.details);
           setInitialValues(petdetailFetchResponse.data.details);
-          
+                    
         }
         else if(petdetailFetchResponse.error && !petdetailFetchResponse.data && !petdetailFetchResponse.isLoading){
           setShowError(true);
@@ -60,25 +71,19 @@ const AddEditDog = (props) => {
     }, [responseState]);
 
     const onFinish = values => {
-        let request = {details: values}; 
-
-        if(props.mode=== PortalConstants.MODAL_MODE_ADD){
-            postRequest(request,  PortalConstants.APIMETHODS.POST);
-
+        let request = {details: values};  
+        if(props.mode=== PortalConstants.MODAL_MODE_EDIT){
+            request.id=props.id;
         }
-        else{
-            let newApiPath = postPutApiPath+ props.id;
-            postRequest(request,  PortalConstants.APIMETHODS.PUT, newApiPath); 
-        }
-
-    
+            postRequest(request,  props.mode=== PortalConstants.MODAL_MODE_ADD ? PortalConstants.APIMETHODS.POST : PortalConstants.APIMETHODS.PUT);
+ 
     };
 
     const onFinishFailed = ({ errorFields }) => {
         form.scrollToField(errorFields[0].name);
     };
  
-
+     
     return (
         <>
           <Spin spinning={loading}>
