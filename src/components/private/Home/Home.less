@@ -1,0 +1,99 @@
+.dropdownMenu{ 
+    padding-top:15%;
+    width:100%
+}
+.ant-divider-horizontal{
+    margin: 0px !important
+}
+
+.layout {
+    .customMenuBar {
+        background: #FFFF !important;
+        border-bottom: 1px solid #e8e8e8;
+        @media (min-width: 768px) {
+            background: #FFFF !important;
+            margin    : 0 0%;
+        }
+        div.appLogo {
+            @media (min-width: 768px) {
+                float: "left";
+                margin: "12px 10px";
+            }
+        }
+    }
+    .barsMenu {
+        float     : right;
+        right     : 10px;
+        height    : 32px;
+        padding   : 6px;
+        margin-top: 8px;
+        display   : block;
+        background: none;
+
+        @media (min-width: 768px) {
+            display: none;
+        }
+
+        .barsBtn {
+            display   : block;
+            width     : 20px;
+            height    : 2px;
+            background: #1890ff;
+            position  : relative;
+            border: none;
+        }
+        .headItem{
+            font-size:16px;
+            color:grey;
+        }
+
+       
+       
+    }
+    
+}
+.menuTd{
+    text-align: left !important;
+}
+
+
+.TopMenu {
+    float: right;
+}
+
+
+.barsBtn {
+    display   : block;
+    width     : 20px;
+    height    : 2px;
+    background: #1890ff;
+    position  : relative;
+}
+
+.barsBtn:after,
+.barsBtn:before {
+    content   : attr(x);
+    width     : 20px;
+    position  : absolute;
+    top       : -6px;
+    left      : 0;
+    height    : 2px;
+    background: #1890ff;
+}
+
+.barsBtn:after {
+    top   : auto;
+    bottom: -6px;
+}
+
+@media(max-width: 767px) {
+    .barsMenu {
+        display: block;
+    }
+
+    .leftMenu,
+    .TopMenu {
+        display: none;
+    }
+}
+

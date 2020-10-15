@@ -1,0 +1,64 @@
+{
+    "menu": {
+        "labels": {
+            "playlists": "Playlists",
+            "settings": "Settings",
+            "songs": "Songs",
+            "artists": "Artists" 
+        },
+        "usersettings": {
+            "items": {
+                "logout": "Sign Out",
+                "changepassword": "Change Password"
+            }
+        }
+    } ,
+    "accountSettings": {
+        "labels": {
+            "title": "Account Settings"
+        },
+        "common": {
+            "edit": "Edit",
+            "save": "Save",
+            "cancel": "Cancel",
+            "errormsg": "We're sorry. We were unable to save your changes at this time, please try again later.",
+            "genericError": "Please correct all the errors in the form below."
+        },
+        "loginInfo": {
+            "title": "Login and Password",
+            "edit": "Edit",
+            "save": "Save",
+            "cancel": "Cancel",
+            "successmsg": "Success! Your password has been reset.",
+            "errormsg": "We're sorry. We were unable to reset your password at this time. Please try again later.",
+            "labels": {
+                "login": "Username",
+                "password": "Password",
+                "old": "Current Password",
+                "new": "New Password",
+                "confirm": "Confirm Password"
+            },
+            "clientErrors": {
+                "pass": "Please enter a valid password.",
+                "matchpassword": "Your new and confirm passwords did not match.",
+                "invalidOldPassword": "We were not able to update your account with the new password as the current password you entered is incorrect."
+            }
+        }
+    },
+    "login": {
+        "labels": {
+            "instance_name": "Instance Name",
+            "login": "Log In",
+            "password": "Password",
+            "sign_in": "To continue, please log in below",
+           
+            "login_id": "Login ID",  
+            "login_failed": "Your login ID or password was incorrect.",
+            
+            "missing_login": "Please enter a valid login ID.",
+            "missing_password": "Please enter a valid password."
+        },
+        "messages": {}
+    } 
+   
+}

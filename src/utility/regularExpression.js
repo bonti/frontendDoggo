@@ -1,0 +1,6 @@
+ 
+//CHECK ALPHANUMERIC AND SPACE
+export const CHECK_ALPHANUMERIC = /(^[a-zA-Z0-9 ]*$)/;
+ 
+//CHECK ENGLISH ALPHABETS
+export const CHECK_ENGLISH_ALPHABETS = /^[a-zA-Z\s]*$/;
