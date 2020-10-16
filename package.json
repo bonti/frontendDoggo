@@ -1,6 +1,5 @@
 {
-  "homepage": "http://3.3.100.120:8080/doggoportal/",
-  "name": "srabonti-sample-ui",
+   "name": "srabonti-sample-ui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -46,8 +45,7 @@
     "socket.io-client": "^2.3.0"
   },
   "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
+    
     "start": "react-app-rewired start",
     "build": "react-app-rewired build",
     "test": "react-app-rewired test",
