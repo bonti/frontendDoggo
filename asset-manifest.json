@@ -1,0 +1,20 @@
+{
+  "files": {
+    "main.css": "/frontendDoggo/doggoportal/static/css/main.5e6e88a8.chunk.css",
+    "main.js": "/frontendDoggo/doggoportal/static/js/main.55191c5f.chunk.js",
+    "runtime-main.js": "/frontendDoggo/doggoportal/static/js/runtime-main.8c8b9fb7.js",
+    "static/css/2.cd1dd82c.chunk.css": "/frontendDoggo/doggoportal/static/css/2.cd1dd82c.chunk.css",
+    "static/js/2.ea08a60c.chunk.js": "/frontendDoggo/doggoportal/static/js/2.ea08a60c.chunk.js",
+    "index.html": "/frontendDoggo/doggoportal/index.html",
+    "precache-manifest.0ef41da8ecca7d66765e8d2810c418ad.js": "/frontendDoggo/doggoportal/precache-manifest.0ef41da8ecca7d66765e8d2810c418ad.js",
+    "service-worker.js": "/frontendDoggo/doggoportal/service-worker.js",
+    "static/js/2.ea08a60c.chunk.js.LICENSE.txt": "/frontendDoggo/doggoportal/static/js/2.ea08a60c.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.8c8b9fb7.js",
+    "static/css/2.cd1dd82c.chunk.css",
+    "static/js/2.ea08a60c.chunk.js",
+    "static/css/main.5e6e88a8.chunk.css",
+    "static/js/main.55191c5f.chunk.js"
+  ]
+}
