@@ -8,9 +8,8 @@ export default function authentication(state = initialState.userInfo, action) {
     switch (action.type) {
       case types.AUTHENTICATE_SUCCESS:
           
-          newState = Object.assign({}, state,{
-                                     userInfo:  action.userInfo
-                                      }); 
+          newState = {...state, userInfo:  action.userInfo }; 
+                    
          return newState;
       case types.AUTHENTICATE_FAILURE :
           newState = Object.assign({}, state,{

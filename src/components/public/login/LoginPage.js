@@ -9,6 +9,7 @@ import * as PortalConstants from "../../../utility/constants";
 import * as gfunctions from "../../../utility/generalFunctions";
 import { useDispatch, useSelector } from "react-redux";
 import {authenticateAndFetchUserInfo} from '../../../actions/authenticationActions';
+import * as logoutAction from '../../../actions/logoutAction';
 import './LoginPage.less';
   
 const LoginPage =(props)=> {
@@ -52,7 +53,7 @@ const LoginPage =(props)=> {
     request.password = values.password;
     setHasLoginError(false);
     setLoading(true);
-
+    dispatch(logoutAction.logout()); 
     dispatch(authenticateAndFetchUserInfo(request)); 
   };
   const onFinishFailed = ({ errorFields }) => {

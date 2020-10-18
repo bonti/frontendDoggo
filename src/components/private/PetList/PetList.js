@@ -69,7 +69,7 @@ const PetList = (props) => {
         <>
         <Spin spinning={loading}>
             <h2>
-                Pets  &nbsp; &nbsp; &nbsp; <Link onClick={addNewDog}> <PlusCircleOutlined></PlusCircleOutlined> Add Dog</Link>
+                Pets  &nbsp; &nbsp; &nbsp; <Link onClick={addNewDog} to=""> <PlusCircleOutlined></PlusCircleOutlined> Add Dog</Link>
             </h2>
             {petlistData && petlistData!==null && loading === false &&
             <List
@@ -79,9 +79,9 @@ const PetList = (props) => {
             <List.Item>
                 <Card title={item.name} extra={
                 <>
-                <Link to={"/home/petdetails/"+item.id}> View Detail</Link>
+                <Link to={"/home/petdetails/"+item.id}> View Detail</Link> &nbsp;&nbsp;
                 
-                <Link onClick={()=>{editDog(item)}}> Edit</Link>
+                <Link onClick={()=>{editDog(item)}} to=""> Edit</Link>
                 </>
                 }>
                     <>

@@ -10,17 +10,24 @@ export function authenticationSuccess(userInfo) {
 
 export function authenticationFailure(userFailure) {
   return { type: types.AUTHENTICATE_FAILURE, userFailure }
+} 
+export function resetAuthInfo() {
+  return async (dispatch) => {
+    dispatch(authenticationFailure({}));
+  }
 }
- 
-//thunk
 export function authenticateAndFetchUserInfo(userInfo) {
-  let requestBody = {
-    userName: userInfo.userName,
-    password: userInfo.password,
-  };
-  const loginURL = `${apiConfigInfo.url}login/`;
-  let options = actionHelper.getDataApiOptionsNotAuthenticated({ method: "POST" }, requestBody);
-  return fetchAndDispatch(loginURL, options, userInfo.clientName);
+  
+  //For some reason spread operator not detecting change on subsequent call.
+   
+    let requestBody = {
+      userName: userInfo.userName,
+      password: userInfo.password,
+    };
+    const loginURL = `${apiConfigInfo.url}login/`;
+    let options = actionHelper.getDataApiOptionsNotAuthenticated({ method: "POST" }, requestBody);
+    return fetchAndDispatch(loginURL, options, userInfo.clientName);
+  
 }
 
 
